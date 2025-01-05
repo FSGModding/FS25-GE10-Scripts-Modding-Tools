@@ -1,6 +1,6 @@
 -- Author: FSG Modding
 -- Name: Random Foliage by Paint Tool
--- Description: Paints random foliage for texture area that selecting transform is located on.
+-- Description: Paints random foliage for texture area that selected transform is located on.
 -- Icon:
 -- Hide: no
 -- Date: 1.3.2025
@@ -748,8 +748,10 @@ function RanFoliagePaint:setFoliageLayer1(value)
 end
 
 function RanFoliagePaint:setFoliageLayer1_State1(value)
-    if self.foliageStatesNames[self.foliageLayer1][value] ~= nil and self.foliageStatesNames[self.foliageLayer1][value] ~= "" then
-      print(self.foliageStatesNames[self.foliageLayer1][value] .. " foliage state selected.")
+    if value == 1 then
+      print("Remove foliage state selected.")
+    elseif self.foliageStatesNames[self.foliageLayer1][value - 1] ~= nil and self.foliageStatesNames[self.foliageLayer1][value - 1] ~= "" then
+      print(self.foliageStatesNames[self.foliageLayer1][value - 1] .. " foliage state selected.")
     else
       printError("Selected Foliage State Not Valid.  Try another one.")
     end
@@ -758,8 +760,10 @@ function RanFoliagePaint:setFoliageLayer1_State1(value)
 end
 
 function RanFoliagePaint:setFoliageLayer1_State2(value)
-    if self.foliageStatesNames[self.foliageLayer1][value] ~= nil and self.foliageStatesNames[self.foliageLayer1][value] ~= "" then
-      print(self.foliageStatesNames[self.foliageLayer1][value] .. " foliage state selected.")
+    if value == 1 then
+      print("Remove foliage state selected.")
+    elseif self.foliageStatesNames[self.foliageLayer1][value - 1] ~= nil and self.foliageStatesNames[self.foliageLayer1][value - 1] ~= "" then
+      print(self.foliageStatesNames[self.foliageLayer1][value - 1] .. " foliage state selected.")
     else
       printError("Selected Foliage State Not Valid.  Try another one.")
     end
@@ -768,8 +772,10 @@ function RanFoliagePaint:setFoliageLayer1_State2(value)
 end
 
 function RanFoliagePaint:setFoliageLayer1_State3(value)
-    if self.foliageStatesNames[self.foliageLayer1][value] ~= nil and self.foliageStatesNames[self.foliageLayer1][value] ~= "" then
-      print(self.foliageStatesNames[self.foliageLayer1][value] .. " foliage state selected.")
+    if value == 1 then
+      print("Remove foliage state selected.")
+    elseif self.foliageStatesNames[self.foliageLayer1][value - 1] ~= nil and self.foliageStatesNames[self.foliageLayer1][value - 1] ~= "" then
+      print(self.foliageStatesNames[self.foliageLayer1][value - 1] .. " foliage state selected.")
     else
       printError("Selected Foliage State Not Valid.  Try another one.")
     end
@@ -784,8 +790,10 @@ function RanFoliagePaint:setFoliageLayer2(value)
 end
 
 function RanFoliagePaint:setFoliageLayer2_State1(value)
-    if self.foliageStatesNames[self.foliageLayer2][value] ~= nil and self.foliageStatesNames[self.foliageLayer2][value] ~= "" then
-      print(self.foliageStatesNames[self.foliageLayer2][value] .. " foliage state selected.")
+    if value == 1 then
+      print("Remove foliage state selected.")
+    elseif self.foliageStatesNames[self.foliageLayer2][value - 1] ~= nil and self.foliageStatesNames[self.foliageLayer2][value - 1] ~= "" then
+      print(self.foliageStatesNames[self.foliageLayer2][value - 1] .. " foliage state selected.")
     else
       printError("Selected Foliage State Not Valid.  Try another one.")
     end
@@ -794,8 +802,10 @@ function RanFoliagePaint:setFoliageLayer2_State1(value)
 end
 
 function RanFoliagePaint:setFoliageLayer2_State2(value)
-    if self.foliageStatesNames[self.foliageLayer2][value] ~= nil and self.foliageStatesNames[self.foliageLayer2][value] ~= "" then
-      print(self.foliageStatesNames[self.foliageLayer2][value] .. " foliage state selected.")
+    if value == 1 then
+      print("Remove foliage state selected.")
+    elseif self.foliageStatesNames[self.foliageLayer2][value - 1] ~= nil and self.foliageStatesNames[self.foliageLayer2][value - 1] ~= "" then
+      print(self.foliageStatesNames[self.foliageLayer2][value - 1] .. " foliage state selected.")
     else
       printError("Selected Foliage State Not Valid.  Try another one.")
     end
@@ -804,8 +814,10 @@ function RanFoliagePaint:setFoliageLayer2_State2(value)
 end
 
 function RanFoliagePaint:setFoliageLayer2_State3(value)
-    if self.foliageStatesNames[self.foliageLayer2][value] ~= nil and self.foliageStatesNames[self.foliageLayer2][value] ~= "" then
-      print(self.foliageStatesNames[self.foliageLayer2][value] .. " foliage state selected.")
+    if value == 1 then
+      print("Remove foliage state selected.")
+    elseif self.foliageStatesNames[self.foliageLayer2][value - 1] ~= nil and self.foliageStatesNames[self.foliageLayer2][value - 1] ~= "" then
+      print(self.foliageStatesNames[self.foliageLayer2][value - 1] .. " foliage state selected.")
     else
       printError("Selected Foliage State Not Valid.  Try another one.")
     end
@@ -820,8 +832,10 @@ function RanFoliagePaint:setFoliageLayer3(value)
 end
 
 function RanFoliagePaint:setFoliageLayer3_State1(value)
-    if self.foliageStatesNames[self.foliageLayer3][value] ~= nil and self.foliageStatesNames[self.foliageLayer3][value] ~= "" then
-      print(self.foliageStatesNames[self.foliageLayer3][value] .. " foliage state selected.")
+    if value == 1 then
+      print("Remove foliage state selected.")
+    elseif self.foliageStatesNames[self.foliageLayer3][value - 1] ~= nil and self.foliageStatesNames[self.foliageLayer3][value - 1] ~= "" then
+      print(self.foliageStatesNames[self.foliageLayer3][value - 1] .. " foliage state selected.")
     else
       printError("Selected Foliage State Not Valid.  Try another one.")
     end
@@ -830,8 +844,10 @@ function RanFoliagePaint:setFoliageLayer3_State1(value)
 end
 
 function RanFoliagePaint:setFoliageLayer3_State2(value)
-    if self.foliageStatesNames[self.foliageLayer3][value] ~= nil and self.foliageStatesNames[self.foliageLayer3][value] ~= "" then
-      print(self.foliageStatesNames[self.foliageLayer3][value] .. " foliage state selected.")
+    if value == 1 then
+      print("Remove foliage state selected.")
+    elseif self.foliageStatesNames[self.foliageLayer3][value - 1] ~= nil and self.foliageStatesNames[self.foliageLayer3][value - 1] ~= "" then
+      print(self.foliageStatesNames[self.foliageLayer3][value - 1] .. " foliage state selected.")
     else
       printError("Selected Foliage State Not Valid.  Try another one.")
     end
@@ -840,8 +856,10 @@ function RanFoliagePaint:setFoliageLayer3_State2(value)
 end
 
 function RanFoliagePaint:setFoliageLayer3_State3(value)
-    if self.foliageStatesNames[self.foliageLayer3][value] ~= nil and self.foliageStatesNames[self.foliageLayer3][value] ~= "" then
-      print(self.foliageStatesNames[self.foliageLayer3][value] .. " foliage state selected.")
+    if value == 1 then
+      print("Remove foliage state selected.")
+    elseif self.foliageStatesNames[self.foliageLayer3][value - 1] ~= nil and self.foliageStatesNames[self.foliageLayer3][value - 1] ~= "" then
+      print(self.foliageStatesNames[self.foliageLayer3][value - 1] .. " foliage state selected.")
     else
       printError("Selected Foliage State Not Valid.  Try another one.")
     end
@@ -856,8 +874,10 @@ function RanFoliagePaint:setFoliageLayer4(value)
 end
 
 function RanFoliagePaint:setFoliageLayer4_State1(value)
-    if self.foliageStatesNames[self.foliageLayer4][value] ~= nil and self.foliageStatesNames[self.foliageLayer4][value] ~= "" then
-      print(self.foliageStatesNames[self.foliageLayer4][value] .. " foliage state selected.")
+    if value == 1 then
+      print("Remove foliage state selected.")
+    elseif self.foliageStatesNames[self.foliageLayer4][value - 1] ~= nil and self.foliageStatesNames[self.foliageLayer4][value - 1] ~= "" then
+      print(self.foliageStatesNames[self.foliageLayer4][value - 1] .. " foliage state selected.")
     else
       printError("Selected Foliage State Not Valid.  Try another one.")
     end
@@ -866,8 +886,10 @@ function RanFoliagePaint:setFoliageLayer4_State1(value)
 end
 
 function RanFoliagePaint:setFoliageLayer4_State2(value)
-    if self.foliageStatesNames[self.foliageLayer4][value] ~= nil and self.foliageStatesNames[self.foliageLayer4][value] ~= "" then
-      print(self.foliageStatesNames[self.foliageLayer4][value] .. " foliage state selected.")
+    if value == 1 then
+      print("Remove foliage state selected.")
+    elseif self.foliageStatesNames[self.foliageLayer4][value - 1] ~= nil and self.foliageStatesNames[self.foliageLayer4][value - 1] ~= "" then
+      print(self.foliageStatesNames[self.foliageLayer4][value - 1] .. " foliage state selected.")
     else
       printError("Selected Foliage State Not Valid.  Try another one.")
     end
@@ -876,8 +898,10 @@ function RanFoliagePaint:setFoliageLayer4_State2(value)
 end
 
 function RanFoliagePaint:setFoliageLayer4_State3(value)
-    if self.foliageStatesNames[self.foliageLayer4][value] ~= nil and self.foliageStatesNames[self.foliageLayer4][value] ~= "" then
-      print(self.foliageStatesNames[self.foliageLayer4][value] .. " foliage state selected.")
+    if value == 1 then
+      print("Remove foliage state selected.")
+    elseif self.foliageStatesNames[self.foliageLayer4][value - 1] ~= nil and self.foliageStatesNames[self.foliageLayer4][value - 1] ~= "" then
+      print(self.foliageStatesNames[self.foliageLayer4][value - 1] .. " foliage state selected.")
     else
       printError("Selected Foliage State Not Valid.  Try another one.")
     end
@@ -892,8 +916,10 @@ function RanFoliagePaint:setFoliageLayer5(value)
 end
 
 function RanFoliagePaint:setFoliageLayer5_State1(value)
-    if self.foliageStatesNames[self.foliageLayer5][value] ~= nil and self.foliageStatesNames[self.foliageLayer5][value] ~= "" then
-      print(self.foliageStatesNames[self.foliageLayer5][value] .. " foliage state selected.")
+    if value == 1 then
+      print("Remove foliage state selected.")
+    elseif self.foliageStatesNames[self.foliageLayer5][value - 1] ~= nil and self.foliageStatesNames[self.foliageLayer5][value - 1] ~= "" then
+      print(self.foliageStatesNames[self.foliageLayer5][value - 1] .. " foliage state selected.")
     else
       printError("Selected Foliage State Not Valid.  Try another one.")
     end
@@ -902,8 +928,10 @@ function RanFoliagePaint:setFoliageLayer5_State1(value)
 end
 
 function RanFoliagePaint:setFoliageLayer5_State2(value)
-    if self.foliageStatesNames[self.foliageLayer5][value] ~= nil and self.foliageStatesNames[self.foliageLayer5][value] ~= "" then
-      print(self.foliageStatesNames[self.foliageLayer5][value] .. " foliage state selected.")
+    if value == 1 then
+      print("Remove foliage state selected.")
+    elseif self.foliageStatesNames[self.foliageLayer5][value - 1] ~= nil and self.foliageStatesNames[self.foliageLayer5][value - 1] ~= "" then
+      print(self.foliageStatesNames[self.foliageLayer5][value - 1] .. " foliage state selected.")
     else
       printError("Selected Foliage State Not Valid.  Try another one.")
     end
@@ -912,8 +940,10 @@ function RanFoliagePaint:setFoliageLayer5_State2(value)
 end
 
 function RanFoliagePaint:setFoliageLayer5_State3(value)
-    if self.foliageStatesNames[self.foliageLayer5][value] ~= nil and self.foliageStatesNames[self.foliageLayer5][value] ~= "" then
-      print(self.foliageStatesNames[self.foliageLayer5][value] .. " foliage state selected.")
+    if value == 1 then
+      print("Remove foliage state selected.")
+    elseif self.foliageStatesNames[self.foliageLayer5][value - 1] ~= nil and self.foliageStatesNames[self.foliageLayer5][value - 1] ~= "" then
+      print(self.foliageStatesNames[self.foliageLayer5][value - 1] .. " foliage state selected.")
     else
       printError("Selected Foliage State Not Valid.  Try another one.")
     end
