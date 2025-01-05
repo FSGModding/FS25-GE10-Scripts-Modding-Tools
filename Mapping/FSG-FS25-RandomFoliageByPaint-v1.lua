@@ -5,12 +5,19 @@
 -- Hide: no
 -- Date: 1.3.2025
 
+
+source("editorUtils.lua")
+local gamePath = EditorUtils.getGameBasePath()
+if gamePath == nil then
+    return
+end
+
 RanFoliagePaint = {}
 RanFoliagePaint.WINDOW_WIDTH = 300
 RanFoliagePaint.WINDOW_HEIGHT = -1
 RanFoliagePaint.TEXT_WIDTH = 230
 RanFoliagePaint.TEXT_HEIGHT = -1
-RanFoliagePaint.GAME_INSTALL_FOLDER = "C:/Program Files (x86)/Farming Simulator 2025/"
+RanFoliagePaint.GAME_INSTALL_FOLDER = gamePath
 RanFoliagePaint.TRACKER_SIZE = 100
 RanFoliagePaint.PARTITIONS_TOTAL = 64
 RanFoliagePaint.DENSITY_MAP_CHANNELS = 4
@@ -396,13 +403,13 @@ function RanFoliagePaint:runFoliagePainter()
     if modifier1 ~= nil then
       table.insert(modifiers, modifier1)
       if self.foliageLayer1_state1 ~= nil and self.foliageLayer1_state1 ~= 0 then
-        table.insert(states1, self.foliageLayer1_state1)
+        table.insert(states1, self.foliageLayer1_state1 - 1)
       end
       if self.foliageLayer1_state2 ~= nil and self.foliageLayer1_state2 ~= 0 then
-        table.insert(states1, self.foliageLayer1_state2)
+        table.insert(states1, self.foliageLayer1_state2 - 1)
       end
       if self.foliageLayer1_state3 ~= nil and self.foliageLayer1_state3 ~= 0 then
-        table.insert(states1, self.foliageLayer1_state3)
+        table.insert(states1, self.foliageLayer1_state3 - 1)
       end
       if states1 ~= nil then
         table.insert(states, states1)
@@ -413,13 +420,13 @@ function RanFoliagePaint:runFoliagePainter()
     if modifier2 ~= nil then
       table.insert(modifiers, modifier2)
       if self.foliageLayer2_state1 ~= nil and self.foliageLayer2_state1 ~= 0 then
-        table.insert(states2, self.foliageLayer2_state1)
+        table.insert(states2, self.foliageLayer2_state1 - 1)
       end
       if self.foliageLayer2_state2 ~= nil and self.foliageLayer2_state2 ~= 0 then
-        table.insert(states2, self.foliageLayer2_state2)
+        table.insert(states2, self.foliageLayer2_state2 - 1)
       end
       if self.foliageLayer2_state3 ~= nil and self.foliageLayer2_state3 ~= 0 then
-        table.insert(states2, self.foliageLayer2_state3)
+        table.insert(states2, self.foliageLayer2_state3 - 1)
       end
       if states2 ~= nil then
         table.insert(states, states2)
@@ -430,13 +437,13 @@ function RanFoliagePaint:runFoliagePainter()
     if modifier3 ~= nil then
       table.insert(modifiers, modifier3)
       if self.foliageLayer3_state1 ~= nil and self.foliageLayer3_state1 ~= 0 then
-        table.insert(states3, self.foliageLayer3_state1)
+        table.insert(states3, self.foliageLayer3_state1 - 1)
       end
       if self.foliageLayer3_state2 ~= nil and self.foliageLayer3_state2 ~= 0 then
-        table.insert(states3, self.foliageLayer3_state2)
+        table.insert(states3, self.foliageLayer3_state2 - 1)
       end
       if self.foliageLayer3_state3 ~= nil and self.foliageLayer3_state3 ~= 0 then
-        table.insert(states3, self.foliageLayer3_state3)
+        table.insert(states3, self.foliageLayer3_state3 - 1)
       end
       if states3 ~= nil then
         table.insert(states, states3)
@@ -447,13 +454,13 @@ function RanFoliagePaint:runFoliagePainter()
     if modifier4 ~= nil then
       table.insert(modifiers, modifier4)
       if self.foliageLayer4_state1 ~= nil and self.foliageLayer4_state1 ~= 0 then
-        table.insert(states4, self.foliageLayer4_state1)
+        table.insert(states4, self.foliageLayer4_state1 - 1)
       end
       if self.foliageLayer4_state2 ~= nil and self.foliageLayer4_state2 ~= 0 then
-        table.insert(states4, self.foliageLayer4_state2)
+        table.insert(states4, self.foliageLayer4_state2 - 1)
       end
       if self.foliageLayer4_state3 ~= nil and self.foliageLayer4_state3 ~= 0 then
-        table.insert(states4, self.foliageLayer4_state3)
+        table.insert(states4, self.foliageLayer4_state3 - 1)
       end
       if states4 ~= nil then
         table.insert(states, states4)
@@ -464,13 +471,13 @@ function RanFoliagePaint:runFoliagePainter()
     if modifier5 ~= nil then
       table.insert(modifiers, modifier5)
       if self.foliageLayer5_state1 ~= nil and self.foliageLayer5_state1 ~= 0 then
-        table.insert(states5, self.foliageLayer5_state1)
+        table.insert(states5, self.foliageLayer5_state1 - 1)
       end
       if self.foliageLayer5_state2 ~= nil and self.foliageLayer5_state2 ~= 0 then
-        table.insert(states5, self.foliageLayer5_state2)
+        table.insert(states5, self.foliageLayer5_state2 - 1)
       end
       if self.foliageLayer5_state3 ~= nil and self.foliageLayer5_state3 ~= 0 then
-        table.insert(states5, self.foliageLayer5_state3)
+        table.insert(states5, self.foliageLayer5_state3 - 1)
       end
       if states5 ~= nil then
         table.insert(states, states5)
@@ -533,22 +540,27 @@ function RanFoliagePaint:runFoliagePainter()
 
                     if self:checkForNoFoliageConflict(newX, terrainHeight, newZ, mTerrainID) == true and terrainHeight > 0 then
 
-                      -- print(string.format("Paint Foliage: %d %d", newX, newZ))
-                      local randomIndex = math.random(1, #modifiers)
-                      local randomStatesIndex = math.random(1, #states[randomIndex])
-
-                      if modifiers[randomIndex] ~= nil then
-                          
-                          modifiers[randomIndex]:setParallelogramWorldCoords(
-                              newX, newZ,
-                              newX + self.spacing, newZ,
-                              newX, newZ + self.spacing,
-                              DensityCoordType.POINT_POINT_POINT
-                          )
-                          modifiers[randomIndex]:executeSet(states[randomIndex][randomStatesIndex])
-                          foliagesPlaced = foliagesPlaced + 1
-                      end
-
+                        -- Make sure modifiers exist
+                        -- print(string.format("Paint Foliage: %d %d", newX, newZ))
+                        if modifiers ~= nil then
+                            local randomIndex = math.random(1, #modifiers)
+                            -- make sure a foliage is selected
+                            if states ~= nil and states[randomIndex] ~= nil and #states[randomIndex] > 0 then
+                                local randomStatesIndex = math.random(1, #states[randomIndex])
+                                -- make sure foliage modifier and state exist
+                                if modifiers[randomIndex] ~= nil and states[randomIndex][randomStatesIndex] ~= nil then
+                                    
+                                    modifiers[randomIndex]:setParallelogramWorldCoords(
+                                        newX, newZ,
+                                        newX + self.spacing, newZ,
+                                        newX, newZ + self.spacing,
+                                        DensityCoordType.POINT_POINT_POINT
+                                    )
+                                    modifiers[randomIndex]:executeSet(states[randomIndex][randomStatesIndex])
+                                    foliagesPlaced = foliagesPlaced + 1
+                                end
+                            end
+                        end
                     end
                 end
 
@@ -911,14 +923,3 @@ end
 
 -- Start everything up
 RanFoliagePaint.new()
-
-
-
-
-
-
-
-
-
-
-
