@@ -5,3 +5,6 @@ Copy these scripts into your `C:\Users\username\AppData\Local\GIANTS Editor 64bi
 
 ## Random Foliage by Paint Tool Docs 
 https://www.farmsimgame.com/Docs/Giants-Editor/Foliage-Script/
+
+## Spline to Field Converter Tool Docs
+https://www.farmsimgame.com/Docs/Giants-Editor/Spline-to-Field-Converter/
