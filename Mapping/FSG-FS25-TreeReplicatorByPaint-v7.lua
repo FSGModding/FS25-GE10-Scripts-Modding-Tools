@@ -88,7 +88,7 @@ function TreeReplicatorByPaint:generateUI()
 
     local objectDistanceSliderSizer = UIColumnLayoutSizer.new()
     UIPanel.new(rowSizer, objectDistanceSliderSizer, -1, -1, 200, -1, BorderDirection.BOTTOM, 0)
-    UILabel.new(objectDistanceSliderSizer, "Tree Distance Radius - Meters", false, TextAlignment.LEFT, VerticalAlignment.TOP, TreeReplicatorByPaint.TEXT_WIDTH, -1, 200);
+    UILabel.new(objectDistanceSliderSizer, "Tree Separation Radius - Meters", false, TextAlignment.LEFT, VerticalAlignment.TOP, TreeReplicatorByPaint.TEXT_WIDTH, -1, 200);
     self.treeDistanceSlider = UIIntSlider.new(objectDistanceSliderSizer, self.treeDistance, 1, 50 );
     self.treeDistanceSlider:setOnChangeCallback(function(value) self:setTreeDistance(value) end)
 
@@ -173,14 +173,14 @@ function TreeReplicatorByPaint:setRestrictPaint(value)
     -- print(value)
     -- Change to true or false
     self.restrictPaint = (value ~= 1)
-    print(self.restrictPaint)
+    -- print(self.restrictPaint)
 end
 
 function TreeReplicatorByPaint:setRandomAngledTrees(value)
     -- print(value)
     -- Change to true or false
     self.randomAngledTrees = (value ~= 1)
-    print(self.randomAngledTrees)
+    -- print(self.randomAngledTrees)
 end
 
 function TreeReplicatorByPaint:setTreeTrackerSize(value)
@@ -192,7 +192,7 @@ function TreeReplicatorByPaint:setLimitPlacementHeights(value)
     -- print(value)
     -- Change to true or false
     self.limitPlacementHeights = (value ~= 1)
-    print(self.limitPlacementHeights)
+    -- print(self.limitPlacementHeights)
 end
 
 function TreeReplicatorByPaint:setMinHeightLevel(value)
@@ -267,8 +267,7 @@ end
 function TreeReplicatorByPaint:buildExistingTreeNodesInRadius(existingTreeNodesInRadius, parentTreeNodeId, origX, origZ)
     if parentTreeNodeId ~= nil then
         local numOfChildren = getNumOfChildren(parentTreeNodeId)
-        local nameCheck = getName(parentTreeNodeId) == "partitionMarkers"
-        if numOfChildren > 0 and not nameCheck then
+        if numOfChildren > 0 then
             for p=0,numOfChildren-1 do
                 local childNodeId = getChildAt(parentTreeNodeId,p)
                 local numOfChildren2 = getNumOfChildren(childNodeId)
@@ -361,7 +360,7 @@ function TreeReplicatorByPaint:runTreePlacementStuff()
                         local rz = 0
                         local sideWaysRotationAdjustment = 0
 
-                        if randomAngledTrees then
+                        if self.randomAngledTrees then
                             -- Randomly set some trees slightly angled
                             local randomIndex = math.random(1, 30)
                             if randomIndex == 10 or randomIndex == 20 then
@@ -412,34 +411,6 @@ function TreeReplicatorByPaint:runTreePlacementStuff()
     print("Number of Trees Placed: " .. treesPlaced)
     if(treesPlaced == 0 and treeTracker == 0) then
         printError("Error: Could not place additional trees.")
-    end
-
-    -- If partation markers enabled then create new tranportgorup for them
-    if partitionMarkers then
-        local parentGroup = getParent(getSelection(0));
-        local newMarkersGroup = createTransformGroup("partitionMarkers");
-        link(parentGroup, newMarkersGroup)
-        -- Loop through all the new trees and put them into their own transport group   
-        for index, point in ipairs(centerPoints) do
-          local pmg = createTransformGroup(string.format("partition_%s",FormatNumber(index)));
-          link(newMarkersGroup,pmg)
-          -- Get terrain height
-          local terrainHeight = getTerrainHeightAtWorldPos(self.mTerrainID, point.x, 0, point.z)
-          setTranslation(pmg, point.x, terrainHeight, point.z)
-          -- Create corners for each partition so it can be mapped later if needed
-          local pmg1 = createTransformGroup(string.format("partition_%s_corner_1",FormatNumber(index)));
-          local pmg2 = createTransformGroup(string.format("partition_%s_corner_2",FormatNumber(index)));
-          local pmg3 = createTransformGroup(string.format("partition_%s_corner_3",FormatNumber(index)));
-          local pmg4 = createTransformGroup(string.format("partition_%s_corner_4",FormatNumber(index)));
-          link(pmg,pmg1)
-          link(pmg,pmg2)
-          link(pmg,pmg3)
-          link(pmg,pmg4)
-          setTranslation(pmg1, -self.sectionSizeHalf, terrainHeight, self.sectionSizeHalf)
-          setTranslation(pmg2, self.sectionSizeHalf, terrainHeight, self.sectionSizeHalf)
-          setTranslation(pmg3, -self.sectionSizeHalf, terrainHeight, -self.sectionSizeHalf)
-          setTranslation(pmg4, self.sectionSizeHalf, terrainHeight, -self.sectionSizeHalf)
-        end
     end
 
 end
