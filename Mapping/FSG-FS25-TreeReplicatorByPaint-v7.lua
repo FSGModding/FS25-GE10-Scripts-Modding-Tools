@@ -9,19 +9,19 @@
 source("editorUtils.lua");
 
 -- Build the class
-PaintTerrainBySpline = {}
-PaintTerrainBySpline.WINDOW_WIDTH = 300
-PaintTerrainBySpline.WINDOW_HEIGHT = -1
-PaintTerrainBySpline.TEXT_WIDTH = 230
-PaintTerrainBySpline.TEXT_HEIGHT = -1
+TreeReplicatorByPaint = {}
+TreeReplicatorByPaint.WINDOW_WIDTH = 300
+TreeReplicatorByPaint.WINDOW_HEIGHT = -1
+TreeReplicatorByPaint.TEXT_WIDTH = 230
+TreeReplicatorByPaint.TEXT_HEIGHT = -1
 
 -- Get things started
-function PaintTerrainBySpline.new()
-    local self = setmetatable({}, {__index=PaintTerrainBySpline})
+function TreeReplicatorByPaint.new()
+    local self = setmetatable({}, {__index=TreeReplicatorByPaint})
 
     self.window = nil
-    if g_currentPaintTerrainBySplineDialog ~= nil then
-        g_currentPaintTerrainBySplineDialog:close()
+    if g_currentTreeReplicatorByPaintDialog ~= nil then
+        g_currentTreeReplicatorByPaintDialog:close()
     end
       
     self.treeDistance = 3
@@ -63,14 +63,14 @@ function PaintTerrainBySpline.new()
 
     self:generateUI()
 
-    g_currentPaintTerrainBySplineDialog = self
+    g_currentTreeReplicatorByPaintDialog = self
 
     return self
 
 end
 
 -- Generate UI Function
-function PaintTerrainBySpline:generateUI()
+function TreeReplicatorByPaint:generateUI()
     -- Setup UI
     local frameRowSizer = UIRowLayoutSizer.new()
     self.window = UIWindow.new(frameRowSizer, "Tree Replicator Tool")
@@ -79,7 +79,7 @@ function PaintTerrainBySpline:generateUI()
     UIPanel.new(frameRowSizer, borderSizer)
 
     local rowSizer = UIRowLayoutSizer.new()
-    UIPanel.new(borderSizer, rowSizer, -1, -1, PaintTerrainBySpline.WINDOW_WIDTH, PaintTerrainBySpline.WINDOW_HEIGHT, BorderDirection.ALL, 10, 1)
+    UIPanel.new(borderSizer, rowSizer, -1, -1, TreeReplicatorByPaint.WINDOW_WIDTH, TreeReplicatorByPaint.WINDOW_HEIGHT, BorderDirection.ALL, 10, 1)
 
     -- Tree Replicator Settings
     local title = UILabel.new(rowSizer, "Tree Replicator Settings", false, TextAlignment.LEFT, VerticalAlignment.TOP, -1, -1, -1, -1, BorderDirection.BOTTOM, 5)
@@ -88,25 +88,25 @@ function PaintTerrainBySpline:generateUI()
 
     local objectDistanceSliderSizer = UIColumnLayoutSizer.new()
     UIPanel.new(rowSizer, objectDistanceSliderSizer, -1, -1, 200, -1, BorderDirection.BOTTOM, 0)
-    UILabel.new(objectDistanceSliderSizer, "Tree Radius - Meters", false, TextAlignment.LEFT, VerticalAlignment.TOP, PaintTerrainBySpline.TEXT_WIDTH, -1, 200);
+    UILabel.new(objectDistanceSliderSizer, "Tree Distance Radius - Meters", false, TextAlignment.LEFT, VerticalAlignment.TOP, TreeReplicatorByPaint.TEXT_WIDTH, -1, 200);
     self.treeDistanceSlider = UIIntSlider.new(objectDistanceSliderSizer, self.treeDistance, 1, 50 );
     self.treeDistanceSlider:setOnChangeCallback(function(value) self:setTreeDistance(value) end)
 
     local restrictPaintPanelSizer = UIGridSizer.new(1, 2, 2, 2)
     local restrictPaintPanel = UIPanel.new(rowSizer, restrictPaintPanelSizer, -1, -1, 200, -1, BorderDirection.BOTTOM, 0)
-    local restrictPaintLabel = UILabel.new(restrictPaintPanelSizer, "Limit to Texture", false, TextAlignment.LEFT, VerticalAlignment.TOP, PaintTerrainBySpline.TEXT_WIDTH, -1)
+    local restrictPaintLabel = UILabel.new(restrictPaintPanelSizer, "Limit to Texture", false, TextAlignment.LEFT, VerticalAlignment.TOP, TreeReplicatorByPaint.TEXT_WIDTH, -1)
     local restrictPaint_Choice = UIChoice.new(restrictPaintPanelSizer, self.disabledEnabledChoice, 1, -1, 100, -1)
     restrictPaint_Choice:setOnChangeCallback(function(value) self:setRestrictPaint(value) end)
 
     local randomAngledTreesPanelSizer = UIGridSizer.new(1, 2, 2, 2)
     local randomAngledTreesPanel = UIPanel.new(rowSizer, randomAngledTreesPanelSizer, -1, -1, 200, -1, BorderDirection.BOTTOM, 0)
-    local randomAngledTreesLabel = UILabel.new(randomAngledTreesPanelSizer, "Randomly Angle Trees", false, TextAlignment.LEFT, VerticalAlignment.TOP, PaintTerrainBySpline.TEXT_WIDTH, -1)
+    local randomAngledTreesLabel = UILabel.new(randomAngledTreesPanelSizer, "Randomly Angle Trees", false, TextAlignment.LEFT, VerticalAlignment.TOP, TreeReplicatorByPaint.TEXT_WIDTH, -1)
     local randomAngledTrees_Choice = UIChoice.new(randomAngledTreesPanelSizer, self.disabledEnabledChoice, 0, -1, 100, -1)
     randomAngledTrees_Choice:setOnChangeCallback(function(value) self:setRandomAngledTrees(value) end)
 
     local objectDistanceSliderSizer = UIColumnLayoutSizer.new()
     UIPanel.new(rowSizer, objectDistanceSliderSizer, -1, -1, 200, -1, BorderDirection.BOTTOM, 0)
-    UILabel.new(objectDistanceSliderSizer, "Placement Fail Limit", false, TextAlignment.LEFT, VerticalAlignment.TOP, PaintTerrainBySpline.TEXT_WIDTH, -1, 200);
+    UILabel.new(objectDistanceSliderSizer, "Placement Fail Limit", false, TextAlignment.LEFT, VerticalAlignment.TOP, TreeReplicatorByPaint.TEXT_WIDTH, -1, 200);
     self.treeTrackerSizeSlider = UIIntSlider.new(objectDistanceSliderSizer, self.treeTrackerSize, 1, 1000);
     self.treeTrackerSizeSlider:setOnChangeCallback(function(value) self:setTreeTrackerSize(value) end)
 
@@ -120,19 +120,19 @@ function PaintTerrainBySpline:generateUI()
 
     local limitPlacementHeightsPanelSizer = UIGridSizer.new(1, 2, 2, 2)
     local limitPlacementHeightsPanel = UIPanel.new(rowSizer, limitPlacementHeightsPanelSizer, -1, -1, 200, -1, BorderDirection.BOTTOM, 0)
-    local limitPlacementHeightsLabel = UILabel.new(limitPlacementHeightsPanelSizer, "Limit Placement Heights", false, TextAlignment.LEFT, VerticalAlignment.TOP, PaintTerrainBySpline.TEXT_WIDTH, -1)
+    local limitPlacementHeightsLabel = UILabel.new(limitPlacementHeightsPanelSizer, "Limit Placement Heights", false, TextAlignment.LEFT, VerticalAlignment.TOP, TreeReplicatorByPaint.TEXT_WIDTH, -1)
     local limitPlacementHeights_Choice = UIChoice.new(limitPlacementHeightsPanelSizer, self.disabledEnabledChoice, 0, -1, 100, -1)
     limitPlacementHeights_Choice:setOnChangeCallback(function(value) self:setLimitPlacementHeights(value) end)
 
     local objectDistanceSliderSizer = UIColumnLayoutSizer.new()
     UIPanel.new(rowSizer, objectDistanceSliderSizer, -1, -1, 200, -1, BorderDirection.BOTTOM, 0)
-    UILabel.new(objectDistanceSliderSizer, "Min Placement Height", false, TextAlignment.LEFT, VerticalAlignment.TOP, PaintTerrainBySpline.TEXT_WIDTH, -1, 200);
+    UILabel.new(objectDistanceSliderSizer, "Min Placement Height", false, TextAlignment.LEFT, VerticalAlignment.TOP, TreeReplicatorByPaint.TEXT_WIDTH, -1, 200);
     self.minHeightLevelSlider = UIIntSlider.new(objectDistanceSliderSizer, self.minHeightLevel, 1, 500);
     self.minHeightLevelSlider:setOnChangeCallback(function(value) self:setMinHeightLevel(value) end)
 
     local objectDistanceSliderSizer = UIColumnLayoutSizer.new()
     UIPanel.new(rowSizer, objectDistanceSliderSizer, -1, -1, 200, -1, BorderDirection.BOTTOM, 0)
-    UILabel.new(objectDistanceSliderSizer, "Max Placement Height", false, TextAlignment.LEFT, VerticalAlignment.TOP, PaintTerrainBySpline.TEXT_WIDTH, -1, 200);
+    UILabel.new(objectDistanceSliderSizer, "Max Placement Height", false, TextAlignment.LEFT, VerticalAlignment.TOP, TreeReplicatorByPaint.TEXT_WIDTH, -1, 200);
     self.maxHeightLevelSlider = UIIntSlider.new(objectDistanceSliderSizer, self.maxHeightLevel, 1, 500);
     self.maxHeightLevelSlider:setOnChangeCallback(function(value) self:setMaxHeightLevel(value) end)
 
@@ -144,7 +144,7 @@ function PaintTerrainBySpline:generateUI()
     title:setBold(true)
     UIHorizontalLine.new(rowSizer, -1, -1, -1, -1, BorderDirection.BOTTOM, 5)
 
-    UIButton.new(rowSizer, "Run Script", function() self:runPaintTerrainBySpline() end, self, -1, -1, -1, -1, BorderDirection.BOTTOM, 2, 1)
+    UIButton.new(rowSizer, "Run Script", function() self:runTreeReplicatorByPaint() end, self, -1, -1, -1, -1, BorderDirection.BOTTOM, 2, 1)
 
     -- layout and show window
     self.window:setOnCloseCallback(function() self:onClose() end)
@@ -152,15 +152,15 @@ function PaintTerrainBySpline:generateUI()
 
 end
 
-function PaintTerrainBySpline:close()
+function TreeReplicatorByPaint:close()
     self.window:close()
 end
 
-function PaintTerrainBySpline:onClose()
+function TreeReplicatorByPaint:onClose()
     -- Clears out any active functions
 end
 
-function PaintTerrainBySpline:setTreeDistance(value)
+function TreeReplicatorByPaint:setTreeDistance(value)
     -- print(value)
     if value > 0 then
       self.treeDistance = value
@@ -169,44 +169,44 @@ function PaintTerrainBySpline:setTreeDistance(value)
     end
 end
 
-function PaintTerrainBySpline:setRestrictPaint(value)
+function TreeReplicatorByPaint:setRestrictPaint(value)
     -- print(value)
     -- Change to true or false
     self.restrictPaint = (value ~= 1)
     print(self.restrictPaint)
 end
 
-function PaintTerrainBySpline:setRandomAngledTrees(value)
+function TreeReplicatorByPaint:setRandomAngledTrees(value)
     -- print(value)
     -- Change to true or false
     self.randomAngledTrees = (value ~= 1)
     print(self.randomAngledTrees)
 end
 
-function PaintTerrainBySpline:setTreeTrackerSize(value)
+function TreeReplicatorByPaint:setTreeTrackerSize(value)
     -- print(value)
     self.treeTrackerSize = value
 end
 
-function PaintTerrainBySpline:setLimitPlacementHeights(value)
+function TreeReplicatorByPaint:setLimitPlacementHeights(value)
     -- print(value)
     -- Change to true or false
     self.limitPlacementHeights = (value ~= 1)
     print(self.limitPlacementHeights)
 end
 
-function PaintTerrainBySpline:setMinHeightLevel(value)
+function TreeReplicatorByPaint:setMinHeightLevel(value)
     -- print(value)
     self.minHeightLevel = value
 end
 
-function PaintTerrainBySpline:setMaxHeightLevel(value)
+function TreeReplicatorByPaint:setMaxHeightLevel(value)
     -- print(value)
     self.maxHeightLevel = value
 end
 
 -- Function to walk up the tree and make sure the selection us under the top level parent specified on the top.
-function PaintTerrainBySpline:walkParents(treeNodeId)
+function TreeReplicatorByPaint:walkParents(treeNodeId)
     parentId = getParent(treeNodeId)
     -- print(parentId)
     if parentId ~= 0 then
@@ -224,7 +224,7 @@ function PaintTerrainBySpline:walkParents(treeNodeId)
 end
 
 -- Function to see if a tree is too close to another before it plants a new one.
-function PaintTerrainBySpline:checkForNoTreeConflict(x, y, z, existingTreeNodesInRadius)
+function TreeReplicatorByPaint:checkForNoTreeConflict(x, y, z, existingTreeNodesInRadius)
     local placeTree = true
     local startIdx, endIdx = 1, #existingTreeNodesInRadius
     while startIdx <= endIdx do
@@ -264,7 +264,7 @@ function PaintTerrainBySpline:checkForNoTreeConflict(x, y, z, existingTreeNodesI
 end
 
 -- Walk down the tree to find all children within the tree radius
-function PaintTerrainBySpline:buildExistingTreeNodesInRadius(existingTreeNodesInRadius, parentTreeNodeId, origX, origZ)
+function TreeReplicatorByPaint:buildExistingTreeNodesInRadius(existingTreeNodesInRadius, parentTreeNodeId, origX, origZ)
     if parentTreeNodeId ~= nil then
         local numOfChildren = getNumOfChildren(parentTreeNodeId)
         local nameCheck = getName(parentTreeNodeId) == "partitionMarkers"
@@ -289,7 +289,7 @@ function PaintTerrainBySpline:buildExistingTreeNodesInRadius(existingTreeNodesIn
     return existingTreeNodesInRadius
 end
 
-function PaintTerrainBySpline:runTreePlacementStuff()
+function TreeReplicatorByPaint:runTreePlacementStuff()
     -- These are the main variables to process everything.
     local origX = 0
     local origZ = 0
@@ -444,7 +444,7 @@ function PaintTerrainBySpline:runTreePlacementStuff()
 
 end
 
-function PaintTerrainBySpline:runPaintTerrainBySpline()
+function TreeReplicatorByPaint:runTreeReplicatorByPaint()
     if self.limitPlacementHeights == true and self.minHeightLevel > self.maxHeightLevel then
         printError("Error: Min height must be less than max height.")
         return
@@ -513,4 +513,4 @@ function PaintTerrainBySpline:runPaintTerrainBySpline()
 end
 
 -- Start the party
-PaintTerrainBySpline:new()
+TreeReplicatorByPaint:new()
