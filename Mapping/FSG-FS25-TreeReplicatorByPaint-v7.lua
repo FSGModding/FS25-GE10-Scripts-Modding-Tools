@@ -231,12 +231,15 @@ function TreeReplicatorByPaint:checkForNoTreeConflict(x, y, z, existingTreeNodes
         local value = existingTreeNodesInRadius[startIdx]
         local tx,ty,tz = getTranslation(value)
         if tx >= x-self.treeDistance and tx <= x+self.treeDistance and tz >= z-self.treeDistance and tz <= z+self.treeDistance then
+            -- print("false - distance bad")
             placeTree = false
             break
-        elseif not self.limitPlacementHeights and y < self.minHeightLevel then -- do not plant below minHeightLevel
+        elseif self.limitPlacementHeights and y < self.minHeightLevel then -- do not plant below minHeightLevel
+            -- print("false - below min height")
             placeTree = false
             break
-        elseif not self.limitPlacementHeights and y > self.maxHeightLevel then -- do not plant above maxHeightLevel
+        elseif self.limitPlacementHeights and y > self.maxHeightLevel then -- do not plant above maxHeightLevel
+            -- print("false - above max height")
             placeTree = false
             break
         elseif self.restrictPaint == true then
@@ -247,15 +250,19 @@ function TreeReplicatorByPaint:checkForNoTreeConflict(x, y, z, existingTreeNodes
             cB = string.format("%.12f",cB)
             cW = string.format("%f",cW)
             cU = string.format("%f",cU)
+            -- print("Selected Tree Color Codes: R: "..self.CurLocColorR.." G: "..self.CurLocColorG.." B: "..self.CurLocColorB.." W: "..self.CurLocColorW.." U:" .. self.CurLocColorU)
             -- print("Checking Tree Color Codes: R: "..cR.." G: "..cG.." B: "..cB.." W: "..cW.." U:" .. cU)
             if cR == self.CurLocColorR and cG == self.CurLocColorG and cB == self.CurLocColorB and cW == self.CurLocColorW then
                 -- Matched color to current top tree location
+                -- print("true - color match")
                 placeTree = true
             else
+                -- print("false - color not match")
                 placeTree = false
                 break
             end
         else
+            -- print("true - no issues")
             placeTree = true
         end
         startIdx = startIdx + 1
@@ -351,7 +358,7 @@ function TreeReplicatorByPaint:runTreePlacementStuff()
                     -- print(string.format("X: %d Z: %d", x, z))
 
                     local terrainHeight = getTerrainHeightAtWorldPos(self.mTerrainID, x, y, z)
-                    if self:checkForNoTreeConflict(x, terrainHeight, z, existingTreeNodesInRadius) == true and terrainHeight > 0 then
+                    if self:checkForNoTreeConflict(x, terrainHeight, z, existingTreeNodesInRadius) == true and terrainHeight >= 0 then
                         treeNodeId = getSelection(math.random(0,getNumSelected()-1))
                         local tree = clone(treeNodeId, true)
                         
