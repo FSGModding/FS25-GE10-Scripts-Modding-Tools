@@ -1,19 +1,21 @@
--- Author:Nicolas Wrobel
--- Name: FSG - 4x paintTerrainBySpline v2
--- Description: First parameter is the detail layer id. Combined layers are in the range [numLayers, numLayers+numCombinedLayers). Second parameter is half the width in meters
+-- Author:Nicolas Wrobel, StrauntMaunt
+-- Name: FSG - 4x paintTerrainBySpline v2 - Updated with window tools by StrauntMaunt
+-- Description: Started from db716f3 on fsg github
 -- Icon:iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAArwAAAK8AFCrDSYAAAAGUlEQVQokWNsrP/PQApgIkn1qIZRDUNKAwBM3gIfYwhd6QAAAABJRU5ErkJgggAAPll81QUDAoAAAAAATgAAAEQAOgBcAGMAbwBkAGUAXABsAHMAaQBtADIAMAAyADEAXABiAGkAbgBcAGQAYQB0AGEAXABtAGEAcABzAFwAdABlAHgAdAB1AHIAZQBzAAAAZQB1AHIAbwBwAGUAYQBuAAAAAACgEAAAAAAAAAAAAAAmWXTVNQQCgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANDKTaZpAQAAYP5Dw2kBAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAACAAQAAAAAANAGmjz6fwAAAAAAAAAAAAAgAAAACIAAANDKTaZpAQAAAAAAAAAAAAABAAAAAAAAAC5ZbNW2BQKAbAAxAAAAAAAAAAAAEABPbmVEcml2ZQAAVAAJAAQA774AAAAAAAAAAC4AAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAE8AbgBlAEQAcgBpAHYAZQAAAE8AbgBlAEQAcgBpAHYAZQAAABgAAAB0AAAAAAAAAAAAFllk1S0GAoBDADoAXABVAHMAZQByAHMAXABmAGIAdQBzAHMAZQBcAEEAcABwAEQAYQB0AGEAXABSAG8AYQBtAGkAbgBnAFwATQBpAGMAcgBvAHMAbwBmAHQAXABXAGkAbgBkAG8AdwBzAFwAUgBlAGMAZQBuAHQAAAAAAAAAAAAeWRzVwgcCgGwAMQAAAAAAAAAAABAAT25lRHJpdmUAAFQACQAEAO++AAAAAAAAAAAuAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAABPAG4AZQBEAHIAaQB2AGUAAABPAG4AZQBEAHIAaQB2AGUAAAAYAAAAAAAEAAAAAAAAAAZZFNXyCAKA
 -- Hide:no
 -- Date: 1.5.2025
-
+-- Depends on helperfiles from: https://gitlab.com/StrauntMaunt/fs25_ge_scripts/-/tree/master/helpers?ref_type=eec48bd12d5fd566864e6337bdfc3e0f2d87d033
+--   helpers/panel_factory.lua
+--   helpers/input_helpers.lua
 -- Load editor utils
 source("editorUtils.lua");
 
+source(getAppDataPath() .. "\\scripts\\helpers\\panel_factory.lua")
+source(getAppDataPath() .. "\\scripts\\helpers\\input_helpers.lua")
+source("ui/MessageBox.lua")
+
 -- Build the class
 PaintTerrainBySpline = {}
-PaintTerrainBySpline.WINDOW_WIDTH = 300
-PaintTerrainBySpline.WINDOW_HEIGHT = -1
-PaintTerrainBySpline.TEXT_WIDTH = 230
-PaintTerrainBySpline.TEXT_HEIGHT = -1
 
 -- Get things started
 function PaintTerrainBySpline.new()
@@ -54,53 +56,18 @@ end
 
 -- Generate UI Function
 function PaintTerrainBySpline:generateUI()
-    -- Setup UI
-    local frameRowSizer = UIRowLayoutSizer.new()
-    self.window = UIWindow.new(frameRowSizer, "Paint Terrain by Spline Tool")
-
-    local borderSizer = UIRowLayoutSizer.new()
-    UIPanel.new(frameRowSizer, borderSizer)
-
-    local rowSizer = UIRowLayoutSizer.new()
-    UIPanel.new(borderSizer, rowSizer, -1, -1, PaintTerrainBySpline.WINDOW_WIDTH, PaintTerrainBySpline.WINDOW_HEIGHT, BorderDirection.ALL, 10, 1)
-
-    -- First Layer Set
-    local title = UILabel.new(rowSizer, "Spline Paint Settings", false, TextAlignment.LEFT, VerticalAlignment.TOP, -1, -1, -1, -1, BorderDirection.BOTTOM, 5)
-    title:setBold(true)
-    UIHorizontalLine.new(rowSizer, -1, -1, -1, -1, BorderDirection.BOTTOM, 5)
-
-    local folLayerPanelSizer = UIGridSizer.new(1, 2, 2, 2)
-    local folLayerPanel = UIPanel.new(rowSizer, folLayerPanelSizer, -1, -1, 200, -1, BorderDirection.BOTTOM, 0)
-    local folLayerLabel = UILabel.new(folLayerPanelSizer, "Field Texture Paint", false, TextAlignment.LEFT, VerticalAlignment.TOP, PaintTerrainBySpline.TEXT_WIDTH, -1)
-    self.textureLayers_Choice = UIChoice.new(folLayerPanelSizer, self.textureLayers, 0, -1, 100, -1)
-    self.textureLayers_Choice:setOnChangeCallback(function(value) self:setTextureLayer(value) end)
-
-    local objectDistanceSliderSizer = UIColumnLayoutSizer.new()
-    UIPanel.new(rowSizer, objectDistanceSliderSizer, -1, -1, 200, -1, BorderDirection.BOTTOM, 0)
-    UILabel.new(objectDistanceSliderSizer, "Paint Width - Meters", false, TextAlignment.LEFT, VerticalAlignment.TOP, PaintTerrainBySpline.TEXT_WIDTH, -1, 200);
-    self.paintWidthSlider = UIIntSlider.new(objectDistanceSliderSizer, self.paintWidth, 1, 50 );
-    self.paintWidthSlider:setOnChangeCallback(function(value) self:setPaintWidth(value) end)
-
-    -- Run Script Button
-    local title = UILabel.new(rowSizer, "", false, TextAlignment.LEFT, VerticalAlignment.TOP, -1, -1, -1, -1, BorderDirection.BOTTOM, 5)
-    local title = UILabel.new(rowSizer, "Click Run Script to Start", false, TextAlignment.LEFT, VerticalAlignment.TOP, -1, -1, -1, -1, BorderDirection.BOTTOM, 5)
-    title:setBold(true)
-    UIHorizontalLine.new(rowSizer, -1, -1, -1, -1, BorderDirection.BOTTOM, 5)
-
-    UIButton.new(rowSizer, "Run Script", function() self:runPaintTerrainBySpline() end, self, -1, -1, -1, -1, BorderDirection.BOTTOM, 2, 1)
-
-    -- layout and show window
-    self.window:setOnCloseCallback(function() self:onClose() end)
+    self.window = PanelFactory.BuildWindow("Paint Terrain by Spline Tool",{
+        PanelFactory.BuildPanel("Spline Paint Settings", {
+            PanelFactory.BuildIntInput("Paint Width - Meters", 5, function(value) self:setPaintWidth(value) end, 1, 50), 
+            PanelFactory.BuildChoiceInput("Field Texture Paint", self.textureLayers, function(value) self:setTextureLayer(value) end), 
+            PanelFactory.BuildButton("Run script", function() self:runPaintTerrainBySpline() end)
+        })
+    })
     self.window:showWindow()
-
 end
 
 function PaintTerrainBySpline:close()
     self.window:close()
-end
-
-function PaintTerrainBySpline:onClose()
-    -- Clears out any active functions
 end
 
 function PaintTerrainBySpline:getTextureLayers()
@@ -131,27 +98,9 @@ function PaintTerrainBySpline:setPaintWidth(value)
 end
 
 function PaintTerrainBySpline:runPaintTerrainBySpline()
+    if InputHelpers.GetTerrain() == nil then return end
 
-    if (getNumSelected() == 0) then
-        printError("Error: Select one or more splines.")
-        return false
-    end
-
-    local mSplineIDs = {}
-    for i = 0, getNumSelected() - 1 do
-        local mID = getSelection( i )
-        if not getHasClassId(mID, ClassIds.SHAPE) or not getHasClassId(getGeometry(mID), ClassIds.SPLINE) then
-            continue
-        end
-        table.insert( mSplineIDs, mID )
-    end
-
-    if #mSplineIDs == 0 then
-        printError("Error: No splines were selected.")
-        return nil
-    end
-
-    for _, mSplineID in pairs(mSplineIDs) do
+    InputHelpers.RunForSelectedSplines(function(mSplineID)
         local mSplineLength = getSplineLength( mSplineID )
         local mSplinePiece = 0.5 -- real size 0.5 meter
         local mSplinePiecePoint = mSplinePiece / mSplineLength  -- relative size [0..1]
@@ -178,7 +127,7 @@ function PaintTerrainBySpline:runPaintTerrainBySpline()
             -- goto next point
             mSplinePos = mSplinePos + mSplinePiecePoint
         end
-    end
+    end)
 
     print("Script Done")
 
